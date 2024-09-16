@@ -133,7 +133,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             axios
-              .get('https://my-website-409r.onrender.com') // Updated Render URL
+              .get('https://my-website-409r.onrender.com/api/photos') // Updated Render URL
               .then(function (response) {
                   const images = response.data;
                   const carousel = document.getElementById('artwork-carousel');
