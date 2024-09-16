@@ -132,46 +132,46 @@
     <!-- Custom JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            axios
-              .get('https://my-website-409r.onrender.com/api/photos') // Updated Render URL
-              .then(function (response) {
-                  const images = response.data;
-                  const carousel = document.getElementById('artwork-carousel');
-        
-                  images.forEach((url) => {
-                      const slide = document.createElement('div');
-                      slide.className = 'swiper-slide';
-        
-                      const img = document.createElement('img');
-                      img.src = url + '=w1024-h768'; // Adjust width and height as needed
-                      img.alt = 'Artwork Image';
-        
-                      slide.appendChild(img);
-                      carousel.appendChild(slide);
-                  });
-        
-                  new Swiper('.swiper-container', {
-                      loop: true,
-                      pagination: {
-                          el: '.swiper-pagination',
-                          clickable: true,
-                      },
-                      navigation: {
-                          nextEl: '.swiper-button-next',
-                          prevEl: '.swiper-button-prev',
-                      },
-                      autoplay: {
-                          delay: 5000,
-                          disableOnInteraction: false,
-                      },
-                      effect: 'slide',
-                  });
-              })
-              .catch(function (error) {
-                  console.error('Error fetching images:', error);
+          axios
+            .get('https://my-website-409r.onrender.com/api/photos') // Correct API endpoint
+            .then(function (response) {
+              const images = response.data;
+              const carousel = document.getElementById('artwork-carousel');
+      
+              images.forEach((url) => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+      
+                const img = document.createElement('img');
+                img.src = url + '=w1024-h768'; // Adjust width and height as needed
+                img.alt = 'Artwork Image';
+      
+                slide.appendChild(img);
+                carousel.appendChild(slide);
               });
+      
+              new Swiper('.swiper-container', {
+                loop: true,
+                pagination: {
+                  el: '.swiper-pagination',
+                  clickable: true,
+                },
+                navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                },
+                autoplay: {
+                  delay: 5000,
+                  disableOnInteraction: false,
+                },
+                effect: 'slide',
+              });
+            })
+            .catch(function (error) {
+              console.error('Error fetching images:', error);
+            });
         });
-    </script>
+      </script>
 </body>
 
 </html>

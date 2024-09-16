@@ -1,15 +1,13 @@
 // server.js
 
-const express = require('express');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const axios = require('axios');
-const cors = require('cors'); // Import the cors package
+const cors = require('cors');
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Use CORS middleware to allow cross-origin requests
 app.use(cors());
@@ -68,7 +66,9 @@ app.get('/api/photos', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+const port = process.env.PORT || 3000;
+
+// Start the server and listen on all network interfaces
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
 });
