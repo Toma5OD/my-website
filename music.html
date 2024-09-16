@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music | Tomás Ó Dálaigh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Conthrax:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        body {
+            font-family: 'Conthrax', sans-serif;
+            background-color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Conthrax', sans-serif;
+        }
+        .carousel-container {
+            max-width: 100vw;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        .music-track {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            background-color: #1a1a1a;
+            padding: 20px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 400px; /* Increased height for consistency */
+        }
+        .music-track iframe.spotify {
+            border-radius: 12px;
+            flex: 0 0 auto;
+            height: 180px; /* Increased height for Spotify iframes */
+            width: 100%; /* Ensure it fills the width */
+        }
+        .music-track iframe.soundcloud {
+            border-radius: 12px;
+            flex: 0 0 auto;
+            height: 140px; /* Fixed height for SoundCloud iframes */
+            width: 100%; /* Ensure it fills the width */
+        }
+        .music-track.soundcloud {
+            padding-bottom: 20px; /* Increased padding for SoundCloud text */
+        }
+        .music-track p {
+            margin-top: 20px; /* Increased margin for text */
+            color: #fff;
+            flex: 1 1 auto;
+            overflow: auto; /* Allow scrolling if text overflows */
+        }
+    </style>
+</head>
+<body class="text-gray-100 overflow-x-hidden">
+
+<!-- Navigation Bar -->
+<nav class="bg-black p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <a class="text-white text-xl font-bold" href="/">Tomás Ó Dálaigh</a>
+        <div>
+            <a class="text-gray-300 hover:text-white ml-4" href="index.html">Home</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="about.html">About</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="music.html">Music</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="events.html">Events</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="videos.html">Videos</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="artwork.html">Artwork</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="contact.html">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Music Section -->
+<section id="music" class="py-12 bg-black text-gray-100">
+    <div class="container mx-auto">
+        <h1 class="text-5xl font-bold text-center mb-12">Music</h1>
+        
+        <!-- Spotify Section Title -->
+        <h2 class="text-3xl font-bold text-center mb-8">Spotify</h2>
+        
+        <!-- Carousel for Tracks -->
+        <div class="carousel-container">
+            <div class="swiper-container mb-12">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide music-track">
+                        <iframe class="spotify" src="https://open.spotify.com/embed/track/64FDnvFr0bakAeX8qmHx50?utm_source=generator&theme=0" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <p class="text-lg">
+                            <strong>N95</strong> is a dynamic track created during the COVID-19 pandemic, featuring a fusion of modern folk, electronic music, and traditional Irish influences. Collaborators on this project include Conor Broderick (co-producer), Alex Borwick (co-producer, mixing mastering, trombone), Richie Delahunty (guitars), Dale McKay (hangpan), Cein Daly (bass), Aine Ni Dhalaigh (vocals), and Fiachra Kinder on drums. This track reflects a blend of energetic electro-acoustic vibes, inspired by artists like Tame Impala, and showcases the versatility and innovative spirit of contemporary Irish music.
+                        </p>
+                    </div>
+                    <div class="swiper-slide music-track">
+                        <iframe class="spotify" src="https://open.spotify.com/embed/track/358OuQ6rqa7jhVxe8eanzQ?utm_source=generator&theme=0" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                        <p class="text-lg">
+                            <strong>Rún</strong> is an introspective composition I crafted over a decade ago. This piece delves deep into themes of loneliness and the quest for meaning in an often perplexing world. The track combines traditional Irish elements with a modern twist, creating a hauntingly beautiful soundscape that resonates with listeners on a profound level.
+                        </p>
+                    </div>
+                    <div class="swiper-slide music-track soundcloud">
+                        <iframe class="soundcloud" width="100%" height="140" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/998559193&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+                        <p class="text-lg">
+                            <strong>Myself and Dean Griffen</strong> playing some tunes from all over. Recorded by Matt Griffin in his studio in Dingle.
+                        </p>
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="p-4 bg-black">
+    <div class="container mx-auto text-center text-white">
+        <p>&copy; 2024 Tomás Ó Dálaigh. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            mousewheel: true,
+            preventInteractionOnTransition: true,
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 30,
+                },
+                1024: {
+                    slidesPerView: 2,
+                    spaceBetween: 40,
+                },
+            },
+        });
+
+        function adjustTrackHeight() {
+            let maxHeight = 0;
+            const tracks = document.querySelectorAll('.music-track');
+            tracks.forEach(track => {
+                track.style.height = 'auto'; // Reset height to auto for recalculation
+                const height = track.offsetHeight;
+                if (height > maxHeight) {
+                    maxHeight = height;
+                }
+            });
+            tracks.forEach(track => {
+                track.style.height = `${maxHeight}px`;
+            });
+        }
+
+        adjustTrackHeight();
+        window.addEventListener('resize', adjustTrackHeight);
+    });
+</script>
+
+</body>
+</html>

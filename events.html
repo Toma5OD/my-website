@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Tomás Ó Dálaigh</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Conthrax:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <style>
+        body {
+            font-family: 'Conthrax', sans-serif;
+            background-color: #000000;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Conthrax', sans-serif;
+        }
+        .event-poster {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .carousel-container {
+            max-width: 100vw;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="text-gray-100 overflow-x-hidden">
+
+<!-- Navigation Bar -->
+<nav class="bg-black p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <a class="text-white text-xl font-bold" href="/">Tomás Ó Dálaigh</a>
+        <div>
+            <a class="text-gray-300 hover:text-white ml-4" href="index.html">Home</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="about.html">About</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="music.html">Music</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="events.html">Events</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="videos.html">Videos</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="artwork.html">Artwork</a>
+            <a class="text-gray-300 hover:text-white ml-4" href="contact.html">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Events Section -->
+<section id="events" class="py-12 bg-black text-gray-100">
+    <div class="container mx-auto">
+        <h1 class="text-5xl font-bold text-center mb-12">Upcoming Events</h1>
+
+        <!-- Carousel for Posters -->
+        <div class="carousel-container">
+            <div class="swiper-container mb-12">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 1" class="event-poster">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 2" class="event-poster">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 3" class="event-poster">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 4" class="event-poster">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 5" class="event-poster">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/park_poster.png" alt="Event Poster 6" class="event-poster">
+                    </div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+        <!-- Events List -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-8">Event Details</h2>
+            <ul class="text-lg">
+                <li class="mb-4">Today, 7pm - The Park, The Fire, Cork</li>
+                <li class="mb-4">Friday, 9:30pm - The Chenet</li>
+                <li class="mb-4">Tuesday, 9th of July, 9pm - JJ Waters</li>
+                <li class="mb-4">19th of July, 7pm - The Orr Fire, Cross Haven</li>
+                <li class="mb-4">19th of July, 9:30pm - The Chenet</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="p-4 bg-black">
+    <div class="container mx-auto text-center text-white">
+        <p>&copy; 2024 Tomás Ó Dálaigh. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1,
+        spaceBetween: 10,
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        mousewheel: true,
+        preventInteractionOnTransition: true,
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 40,
+            },
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 50,
+            },
+        },
+    });
+</script>
+
+</body>
+</html>
