@@ -12,7 +12,9 @@ const app = express();
 
 // Use CORS middleware to allow cross-origin requests
 app.use(cors({
-  origin: 'https://toma5od.netlify.app/', // Replace with your actual frontend domain
+  origin: 'https://toma5od.netlify.app', // Replace with your exact frontend URL
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
 
 // Configure OAuth2 client
