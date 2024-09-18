@@ -11,7 +11,9 @@ dotenv.config();
 const app = express();
 
 // Use CORS middleware to allow cross-origin requests
-app.use(cors());
+app.use(cors({
+  origin: 'https://toma5od.netlify.app/', // Replace with your actual frontend domain
+}));
 
 // Configure OAuth2 client
 const oauth2Client = new google.auth.OAuth2(
