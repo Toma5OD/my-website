@@ -52,6 +52,7 @@ The backend server is hosted on **Render**. Here’s how to deploy and configure
    ```bash
    npm install
    ```
+   This must be done in both Frontend and Backend Folders
 
 3. **Configure Environment Variables**:
    On **Render**, go to your service's settings and add the following environment variables:
@@ -67,6 +68,73 @@ The backend server is hosted on **Render**. Here’s how to deploy and configure
 5. **API Endpoint**:
    The backend server exposes an API endpoint at `/api/photos`, which the frontend accesses to retrieve the artwork photos.
 
+## Project Structure
+
+The project is organized into three main directories to separate concerns and facilitate deployment:
+
+```
+📁 My Website
+│
+├── LICENSE
+├── README.md
+├── .gitignore
+├── 📁 Backend
+│   ├── server.js
+│   ├── package.json
+│   ├── package-lock.json
+│   └── .env
+│
+├── 📁 Frontend
+│   ├── index.html
+│   ├── about.html
+│   ├── artwork.html
+│   ├── contact.html
+│   ├── events.html
+│   ├── music.html
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── videos.html
+│   └── 📁 images
+│       └── park_poster.png
+│
+└── 📁 Tools
+├── getToken.js
+└── listAlbums.js
+```
+
+### Overview of the Directory Structure
+
+- **Backend**: Contains all server-side code and configuration files for the backend API.
+- **Frontend**: Holds all client-side code, including HTML, CSS, JavaScript, and static assets.
+- **Tools**: Includes utility scripts used for setup or maintenance tasks, such as obtaining tokens or listing albums.
+
+## Notable Files and Directories
+
+### Backend
+
+- **server.js**: The main server application file. It sets up an Express server, handles API endpoints, and communicates with the Google Photos API to fetch images for the artwork carousel.
+- **package.json**: Contains metadata about the backend project and lists the dependencies required to run the server.
+- **package-lock.json**: Automatically generated file that locks the versions of the project's dependencies.
+- **.env**: Stores environment variables required for the backend, such as API keys and secrets. This file is not committed to the repository for security reasons.
+
+### Frontend
+
+- **index.html**, **about.html**, **artwork.html**, **contact.html**, **events.html**, **music.html**, **videos.html**: These HTML files constitute the different pages of the website. They are static pages styled with Tailwind CSS and use external libraries via CDNs.
+- **images/**: Directory containing image assets used in the frontend, such as `park_poster.png`.
+
+### Tools
+
+- **getToken.js**: A utility script used to obtain an OAuth 2.0 refresh token from Google, which is necessary for authenticating requests to the Google Photos API.
+- **listAlbums.js**: A script that lists all photo albums associated with the Google account. Useful for retrieving the `ALBUM_ID` required by the backend server to fetch images from a specific album.
+
+---
+
+**Note**: The HTML pages in the `Frontend` directory are self-explanatory and designed to be static content pages for the website. They include links to external resources and scripts via CDNs and do not require additional build steps.
+
+---
+
+By organizing the project in this way, the frontend and backend can be developed, deployed, and scaled independently. The backend server handles API requests and interacts with external services, while the frontend provides the user interface and makes requests to the backend API.
+
 ## Updating Artwork Photos
 
 To update the artwork photos on the carousel:
@@ -79,7 +147,3 @@ To update the artwork photos on the carousel:
 This project is licensed under the **Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License**. You may use this code for personal and non-commercial purposes with proper attribution to the original author.
 
 For more details about the license, visit: [https://creativecommons.org/licenses/by-nc-nd/4.0/](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
-## How to Contribute
-
-As this project may become monetized, contributions are currently not accepted. However, feel free to reach out via the contact page if you would like to discuss collaboration opportunities.

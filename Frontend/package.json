@@ -1,20 +1,16 @@
 {
-  "name": "my-website-backend",
+  "name": "my-website-frontend",
   "version": "1.0.0",
-  "main": "server.js",
+  "description": "Frontend code for Tomás Ó Dálaigh's personal website",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "echo 'No build necessary for static site'",
+    "start": "serve"
   },
   "keywords": [],
-  "author": "",
+  "author": "Tomás Ó Dálaigh",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "axios": "^1.7.7",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "googleapis": "^144.0.0"
+    "axios": "^1.7.7"
   }
 }
