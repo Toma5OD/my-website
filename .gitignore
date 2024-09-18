@@ -6,11 +6,12 @@
 # Node.js dependencies
 node_modules/
 
-notes.txt
-
 # Logs
 logs
 *.log
 
 # Other files to ignore
 .DS_Store
+# Build directories
+dist/
+build/
