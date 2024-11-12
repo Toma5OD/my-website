@@ -1,17 +1,37 @@
-# .gitignore
-
-# Ignore environment variable files
-.env
-
 # Node.js dependencies
 node_modules/
 
-# Logs
-logs
-*.log
+# Environment variables
+.env
 
-# Other files to ignore
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-generated files
 .DS_Store
-# Build directories
+Thumbs.db
+
+# Optional: Ignore build output directories (add if you have these)
 dist/
 build/
+.next/
+
+# Dependency directories
+.pnp/
+.pnp.js
+
+# Ignore any generated lock files
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# IDE/editor-specific files
+.vscode/
+.idea/
+
+# Miscellaneous
+.cache/
+.temp/
