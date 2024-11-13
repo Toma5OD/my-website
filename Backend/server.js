@@ -127,7 +127,7 @@ app.get('/api/photos', async (req, res) => {
         }
 
         // Generate public URL for the image
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURIComponent(fileName)}`;
+        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media`;
 
         return { id: item.id, url: publicUrl };
       })
