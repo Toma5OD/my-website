@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8" />
@@ -17,7 +18,8 @@
 
     <!-- Custom Styles -->
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -59,8 +61,10 @@
         }
 
         .swiper-slide img {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 800px;
+            /* Adjust as needed */
+            width: 100%;
+            height: auto;
             object-fit: contain;
         }
 
@@ -81,6 +85,7 @@
         }
     </style>
 </head>
+
 <body class="text-gray-100 overflow-hidden">
     <!-- Navigation Bar -->
     <nav class="bg-black p-4">
@@ -136,7 +141,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             axios
-                .get('https://my-website-409r.onrender.com/api/photos') // Replace with your actual backend API URL
+                .get('https://my-website-409r.onrender.com/api/photos')
                 .then(function (response) {
                     const images = response.data;
                     const carousel = document.getElementById('artwork-carousel');
@@ -146,7 +151,7 @@
                         slide.className = 'swiper-slide';
 
                         const img = document.createElement('img');
-                        img.src = image.url;
+                        img.src = image.url; // Use image.url to get the URL string
                         img.alt = 'Artwork Image';
 
                         slide.appendChild(img);
@@ -177,4 +182,5 @@
         });
     </script>
 </body>
+
 </html>
