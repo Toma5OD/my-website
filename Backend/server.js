@@ -28,9 +28,9 @@ const bucket = admin.storage().bucket();
 app.use(
   cors({
     origin: [
-      'http://localhost:3000',           // For local development
-      'http://127.0.0.1:5500',           // Add this for your local development
-      'https://toma5od.netlify.app',     // Your deployed frontend URL
+      'http://localhost:3000',       // Local development
+      'http://127.0.0.1:5500',       // Local development
+      'https://toma5od.netlify.app', // Deployed frontend URL
       // Add other allowed origins if necessary
     ],
     methods: ['GET', 'POST'],
@@ -40,19 +40,18 @@ app.use(
 
 // Configure OAuth2 client for Google APIs
 const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,     // Your Google API client ID
-  process.env.GOOGLE_CLIENT_SECRET, // Your Google API client secret
-  process.env.REDIRECT_URI          // Your Google API redirect URI (if applicable)
+  process.env.GOOGLE_CLIENT_ID,     // Google API client ID
+  process.env.GOOGLE_CLIENT_SECRET  // Google API client secret
 );
 
 oauth2Client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN, // Your Google API refresh token
+  refresh_token: process.env.REFRESH_TOKEN, // Google API refresh token
 });
 
 // Endpoint to get album images
 app.get('/api/photos', async (req, res) => {
   try {
-    const albumId = process.env.ALBUM_ID; // Your Google Photos album ID
+    const albumId = process.env.ALBUM_ID; // Google Photos album ID
     const albumRef = db.collection('albums').doc(albumId);
     const albumSnapshot = await albumRef.get();
 
@@ -62,9 +61,8 @@ app.get('/api/photos', async (req, res) => {
       return res.json(albumData.images);
     }
 
-    // Obtain a new access token (if needed)
-    const accessTokenResponse = await oauth2Client.getAccessToken();
-    const accessToken = accessTokenResponse.token;
+    // Obtain a new access token
+    const { token } = await oauth2Client.getAccessToken();
 
     let mediaItems = [];
     let nextPageToken = null;
@@ -80,7 +78,7 @@ app.get('/api/photos', async (req, res) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -90,50 +88,50 @@ app.get('/api/photos', async (req, res) => {
     } while (nextPageToken);
 
     // Process and upload images to Firebase Storage
-  const images = await Promise.all(
-  mediaItems.map(async (item) => {
-    const fileName = `${item.id}.jpg`;
-    const file = bucket.file(fileName);
+    const images = await Promise.all(
+      mediaItems.map(async (item) => {
+        const fileName = `${item.id}.jpg`;
+        const file = bucket.file(fileName);
 
-    // Check if the file already exists in Firebase Storage
-    const [exists] = await file.exists();
-    if (!exists) {
-      // Download image from Google Photos
-      const response = await axios({
-        url: `${item.baseUrl}=d`, // Download URL
-        method: 'GET',
-        responseType: 'stream',
-      });
+        // Check if the file already exists in Firebase Storage
+        const [exists] = await file.exists();
+        if (!exists) {
+          // Download image from Google Photos
+          const response = await axios({
+            url: `${item.baseUrl}=d`, // Download URL
+            method: 'GET',
+            responseType: 'stream',
+          });
 
-      // Upload image to Firebase Storage
-      await new Promise((resolve, reject) => {
-        const writeStream = file.createWriteStream({
-          metadata: {
-            contentType: 'image/jpeg',
-          },
-        });
-      
-        response.data
-          .pipe(writeStream)
-          .on('finish', async () => {
-            try {
-              // Make the file publicly readable
-              await file.makePublic();
-              resolve();
-            } catch (err) {
-              reject(err);
-            }
-          })
-          .on('error', reject);
-      });
-    }
+          // Upload image to Firebase Storage
+          await new Promise((resolve, reject) => {
+            const writeStream = file.createWriteStream({
+              metadata: {
+                contentType: 'image/jpeg',
+              },
+            });
 
-    // Generate public URL for the image
-    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURIComponent(fileName)}`;
+            response.data
+              .pipe(writeStream)
+              .on('finish', async () => {
+                try {
+                  // Make the file publicly readable
+                  await file.makePublic();
+                  resolve();
+                } catch (err) {
+                  reject(err);
+                }
+              })
+              .on('error', reject);
+          });
+        }
 
-    return { id: item.id, url: publicUrl };
-  })
-);
+        // Generate public URL for the image
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${encodeURIComponent(fileName)}`;
+
+        return { id: item.id, url: publicUrl };
+      })
+    );
 
     // Save images metadata to Firestore
     await albumRef.set({ images });
