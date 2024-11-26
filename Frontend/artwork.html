@@ -16,6 +16,13 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Firestore SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase Storage SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
     <!-- Custom Styles -->
     <style>
         html,
@@ -130,58 +137,74 @@
         </div>
     </footer>
 
-    <!-- Axios for HTTP requests -->
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
     <!-- Swiper JS for the carousel -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBk1ktLpjq5JDwJOwC9sbHqZUVYmyucY70",
+            authDomain: "my-website-9ed5b.firebaseapp.com",
+            projectId: "my-website-9ed5b",
+            storageBucket: "my-website-9ed5b.firebasestorage.app",
+            messagingSenderId: "162510367386",
+            appId: "1:162510367386:web:5b33d83f769995b4960d23"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firestore
+        const db = firebase.firestore();
+
         document.addEventListener('DOMContentLoaded', function () {
-          axios
-            .get('https://my-website-409r.onrender.com/api/photos')
-            .then(function (response) {
-              const images = response.data;
-              const carousel = document.getElementById('artwork-carousel');
-      
-              images.forEach((image) => {
-                console.log('Image object:', image);
-                console.log('Image URL:', image.url);
-                const slide = document.createElement('div');
-                slide.className = 'swiper-slide';
-      
-                const img = document.createElement('img');
-                img.src = image.url; // Correctly set the image URL
-                img.alt = 'Artwork Image';
-      
-                slide.appendChild(img);
-                carousel.appendChild(slide);
-              });
-      
-              // Initialize Swiper after slides have been added
-              new Swiper('.swiper-container', {
-                loop: true,
-                pagination: {
-                  el: '.swiper-pagination',
-                  clickable: true,
-                },
-                navigation: {
-                  nextEl: '.swiper-button-next',
-                  prevEl: '.swiper-button-prev',
-                },
-                autoplay: {
-                  delay: 5000,
-                  disableOnInteraction: false,
-                },
-                effect: 'slide',
-              });
-            })
-            .catch(function (error) {
-              console.error('Error fetching images:', error);
-            });
+            const albumId = 'AAM2y2OklOoj7agl_Sv_35m2pW421J8Q2GetqJh4UbZXmekVR3c1TYbkcgt9kpZ5TehDoTD-kjM7';
+
+            db.collection('albums').doc(albumId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const images = doc.data().images;
+                        const carousel = document.getElementById('artwork-carousel');
+
+                        images.forEach((image) => {
+                            const slide = document.createElement('div');
+                            slide.className = 'swiper-slide';
+
+                            const img = document.createElement('img');
+                            img.src = image.url;
+                            img.alt = 'Artwork Image';
+
+                            slide.appendChild(img);
+                            carousel.appendChild(slide);
+                        });
+
+                        // Initialize Swiper after slides have been added
+                        new Swiper('.swiper-container', {
+                            loop: true,
+                            pagination: {
+                                el: '.swiper-pagination',
+                                clickable: true,
+                            },
+                            navigation: {
+                                nextEl: '.swiper-button-next',
+                                prevEl: '.swiper-button-prev',
+                            },
+                            autoplay: {
+                                delay: 5000,
+                                disableOnInteraction: false,
+                            },
+                            effect: 'slide',
+                        });
+                    } else {
+                        console.error('No such document!');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error getting document:', error);
+                });
         });
-      </script>
+    </script>
 </body>
 
 </html>

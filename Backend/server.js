@@ -1,17 +1,10 @@
-// server.js
+require('dotenv').config();
 
-const express = require('express');
-const { google } = require('googleapis');
-const dotenv = require('dotenv');
-const axios = require('axios');
-const cors = require('cors');
 const admin = require('firebase-admin');
+const axios = require('axios');
+const { google } = require('googleapis');
 
-dotenv.config();
-
-const app = express();
-
-// Firebase setup
+// Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert({
     projectId: process.env.FIREBASE_PROJECT_ID,
@@ -24,82 +17,53 @@ admin.initializeApp({
 const db = admin.firestore();
 const bucket = admin.storage().bucket();
 
-// Use CORS middleware to allow cross-origin requests
-app.use(
-  cors({
-    origin: [
-      'http://localhost:3000',       // Local development
-      'http://127.0.0.1:5500',       // Local development
-      'https://toma5od.netlify.app', // Deployed frontend URL
-      // Add other allowed origins if necessary
-    ],
-    methods: ['GET', 'POST'],
-    credentials: true,
-  })
-);
-
-// Configure OAuth2 client for Google APIs
+// Google OAuth2 Client
 const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,     // Google API client ID
-  process.env.GOOGLE_CLIENT_SECRET  // Google API client secret
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET
 );
 
 oauth2Client.setCredentials({
-  refresh_token: process.env.REFRESH_TOKEN, // Google API refresh token
+  refresh_token: process.env.REFRESH_TOKEN,
 });
 
-// Endpoint to get album images
-app.get('/api/photos', async (req, res) => {
+async function syncPhotos() {
   try {
-    const albumId = process.env.ALBUM_ID; // Google Photos album ID
+    console.log('Starting photo synchronization...');
+
+    const albumId = process.env.ALBUM_ID;
     const albumRef = db.collection('albums').doc(albumId);
-    const albumSnapshot = await albumRef.get();
-
-    // If images exist in Firestore, retrieve and send them
-    if (albumSnapshot.exists) {
-      const albumData = albumSnapshot.data();
-      return res.json(albumData.images);
-    }
-
-    // Obtain a new access token
-    const { token } = await oauth2Client.getAccessToken();
-
-    let mediaItems = [];
-    let nextPageToken = null;
 
     // Fetch media items from Google Photos API
+    const photos = [];
+    let nextPageToken = null;
+
     do {
-      const response = await axios.post(
-        'https://photoslibrary.googleapis.com/v1/mediaItems:search',
-        {
-          albumId: albumId,
-          pageSize: 50, // Adjust as needed
+      const response = await oauth2Client.request({
+        url: 'https://photoslibrary.googleapis.com/v1/mediaItems',
+        params: {
+          pageSize: 100,
           pageToken: nextPageToken,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      });
 
-      mediaItems = mediaItems.concat(response.data.mediaItems || []);
+      const mediaItems = response.data.mediaItems || [];
+      photos.push(...mediaItems);
+
       nextPageToken = response.data.nextPageToken;
     } while (nextPageToken);
 
     // Process and upload images to Firebase Storage
     const images = await Promise.all(
-      mediaItems.map(async (item) => {
+      photos.map(async (item) => {
         const fileName = `${item.id}.jpg`;
         const file = bucket.file(fileName);
 
-        // Check if the file already exists in Firebase Storage
+        // Check if the file already exists
         const [exists] = await file.exists();
         if (!exists) {
           // Download image from Google Photos
-          const response = await axios({
-            url: `${item.baseUrl}=d`, // Download URL
-            method: 'GET',
+          const response = await axios.get(`${item.baseUrl}=d`, {
             responseType: 'stream',
           });
 
@@ -127,7 +91,9 @@ app.get('/api/photos', async (req, res) => {
         }
 
         // Generate public URL for the image
-        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(fileName)}?alt=media`;
+        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(
+          fileName
+        )}?alt=media`;
 
         return { id: item.id, url: publicUrl };
       })
@@ -136,16 +102,12 @@ app.get('/api/photos', async (req, res) => {
     // Save images metadata to Firestore
     await albumRef.set({ images });
 
-    res.json(images);
+    console.log('Photo synchronization completed successfully.');
   } catch (error) {
-    console.error('Error fetching and uploading photos:', error);
-    res.status(500).send('Error fetching photos');
+    console.error('Error syncing photos:', error);
   }
-});
+}
 
-const port = process.env.PORT || 3000;
+console.log('FIREBASE_PRIVATE_KEY is', process.env.FIREBASE_PRIVATE_KEY ? 'set' : 'not set');
 
-// Start the server and listen on all network interfaces
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server is running on port ${port}`);
-});
+syncPhotos();
