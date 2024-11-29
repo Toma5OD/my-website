@@ -1,112 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Meta tags and links -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tomás Ó Dálaigh | Modern Irish Fiddle Player</title>
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            margin: 0;
         }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Montserrat', sans-serif;
         }
+
+        /* Navbar Styles */
+        nav {
+            height: 4.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Hero Section */
         .hero-background {
-            background-image: url('https://www.koncon.nl/storage/media/_1440xAUTO_fit_center-center_none_ns/245541/811_0157.webp'); /* High-resolution image URL */
+            background-image: url('https://www.koncon.nl/storage/media/_1440xAUTO_fit_center-center_none_ns/245541/811_0157.webp');
             background-size: cover;
             background-position: center;
+            /* Adjust height to fit within viewport minus navbar and footer */
+            height: calc(100vh - 4.5rem - 2rem);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Footer Styles */
+        footer {
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        footer p {
+            margin: 0;
+            padding: 0;
+            font-size: 1rem;
         }
     </style>
 </head>
+
 <body class="bg-black text-gray-100">
+    <!-- Navbar -->
+    <div id="navbar"></div>
 
-<!-- Navigation Bar -->
-<nav class="bg-black p-4">
-    <div class="container mx-auto flex justify-between items-center">
-        <a class="text-white text-xl font-bold" href="/">Tomás Ó Dálaigh</a>
-        <div>
-            <a class="text-gray-300 hover:text-white ml-4" href="index.html">Home</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="about.html">About</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="music.html">Music</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="events.html">Events</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="videos.html">Videos</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="artwork.html">Artwork</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="contact.html">Contact</a>
+    <!-- Hero Section -->
+    <section class="hero-background">
+        <div class="text-center text-white p-4 bg-black bg-opacity-70 rounded-lg w-11/12 max-w-4xl">
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight">
+                Welcome to the website of Tomás Ó Dálaigh
+            </h1>
+            <p class="mt-4 text-lg md:text-2xl">
+                Showcasing modern Irish fiddle playing, rooted in rich tradition and vibrant emotions.
+            </p>
         </div>
-    </div>
-</nav>
+    </section>
 
-<!-- Hero Section -->
-<section class="hero-background h-screen flex items-center justify-center">
-    <div class="text-center text-white p-4 bg-black bg-opacity-70 rounded-lg">
-        <h1 class="text-5xl font-bold">Welcome to the website of Tomás Ó Dálaigh</h1>
-        <p class="mt-4 text-xl">Showcasing modern Irish fiddle playing, rooted in rich tradition and vibrant emotions.</p>
-    </div>
-</section>
+    <!-- Footer -->
+    <div id="footer"></div>
 
-<!-- About Section -->
-<section id="about" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">About Tomás</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">
-            Tomás Ó Dálaigh is a 28-year-old virtuoso fiddle player hailing from Waterford, Ireland, and currently based in Cork. With a deep-rooted passion for traditional Irish music, Tomás has modernized the fiddle's sound, infusing it with contemporary flair while staying true to his heritage. His journey has seen him perform across Europe, the US, and China, captivating audiences with his dynamic performances and heartfelt melodies. Tomás's music is a testament to the timeless appeal of Irish culture, seamlessly blending the old with the new.
-        </p>
-    </div>
-</section>
+    <!-- Scripts -->
+    <script>
+        // Inject Navbar
+        fetch('Components/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+            });
 
-<!-- Music Section -->
-<section id="music" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">My Music</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">Discover my latest tracks and albums, available on all major music platforms.</p>
-        <!-- Add music player or links to music platforms here -->
-    </div>
-</section>
-
-<!-- Videos Section -->
-<section id="videos" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">Videos</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">Watch my music videos and live performances, capturing the essence of modern Irish fiddle playing.</p>
-        <!-- Add embedded YouTube or Vimeo videos here -->
-    </div>
-</section>
-
-<!-- Events Section -->
-<section id="events" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">Upcoming Events</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">Join me at my upcoming performances and events across Ireland and beyond.</p>
-        <!-- Add list of events here -->
-    </div>
-</section>
-
-<!-- Shop Section -->
-<section id="shop" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">Shop</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">Get your hands on exclusive merchandise and music. Support my journey and take a piece of the tradition home with you.</p>
-        <!-- Add links to shop or embedded store here -->
-    </div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-8 text-white">Contact</h2>
-        <p class="text-center max-w-2xl mx-auto text-lg">Feel free to reach out for bookings, collaborations, or just to say hi!</p>
-        <!-- Add contact form or email links here -->
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="p-4 bg-black">
-    <div class="container mx-auto text-center text-white">
-        <p>&copy; 2024 Tomás Ó Dálaigh. All rights reserved.</p>
-    </div>
-</footer>
-
+        // Inject Footer
+        fetch('Components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            });
+    </script>
 </body>
+
 </html>

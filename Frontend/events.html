@@ -1,137 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and links -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events | Tomás Ó Dálaigh</title>
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Conthrax:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- Firebase SDKs -->
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <!-- Firebase Firestore SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <!-- Firebase Storage SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Conthrax', sans-serif;
             background-color: #000000;
+            margin: 0;
+            overflow: hidden; /* Prevent unwanted scrolling */
         }
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Conthrax', sans-serif;
+            margin: 0;
+        }
+        /* Navbar Styles */
+        nav {
+            height: 4.5rem; /* Consistent header height */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        /* Main Content */
+        .main-content {
+            height: calc(100vh - 4.5rem - 2rem); /* Subtract header and footer heights */
+            display: flex;
+            overflow: hidden; /* Prevent unwanted scrolling */
+        }
+        /* Two-Column Layout */
+        .events-column, .carousel-column {
+            flex: 1;
+            overflow: hidden;
+        }
+        /* Event Details */
+        .events-list {
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .events-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .events-list li {
+            margin-bottom: 20px;
+        }
+        /* Carousel Styles */
+        .carousel-container {
+            height: 100%;
+        }
+        .swiper-container {
+            height: 100%;
+        }
+        .swiper-wrapper {
+            height: 100%;
+        }
+        .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .event-poster {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .carousel-container {
-            max-width: 100vw;
-            overflow: hidden;
-            margin: 0 auto;
+        /* Footer Styles */
+        footer {
+            height: 2rem; /* Consistent footer height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .events-column, .carousel-column {
+                flex: none;
+                height: 50%;
+            }
         }
     </style>
 </head>
 <body class="text-gray-100 overflow-x-hidden">
 
-<!-- Navigation Bar -->
-<nav class="bg-black p-4">
-    <div class="container mx-auto flex justify-between items-center">
-        <a class="text-white text-xl font-bold" href="/">Tomás Ó Dálaigh</a>
-        <div>
-            <a class="text-gray-300 hover:text-white ml-4" href="index.html">Home</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="about.html">About</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="music.html">Music</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="events.html">Events</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="videos.html">Videos</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="artwork.html">Artwork</a>
-            <a class="text-gray-300 hover:text-white ml-4" href="contact.html">Contact</a>
-        </div>
-    </div>
-</nav>
+<!-- Navbar -->
+<div id="navbar"></div>
 
-<!-- Events Section -->
-<section id="events" class="py-12 bg-black text-gray-100">
-    <div class="container mx-auto">
-        <h1 class="text-5xl font-bold text-center mb-12">Upcoming Events</h1>
-
-        <!-- Carousel for Posters -->
+<!-- Main Content -->
+<div class="main-content">
+    <!-- Carousel Column -->
+    <div class="carousel-column">
         <div class="carousel-container">
-            <div class="swiper-container mb-12">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 1" class="event-poster">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 2" class="event-poster">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 3" class="event-poster">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 4" class="event-poster">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 5" class="event-poster">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/park_poster.png" alt="Event Poster 6" class="event-poster">
-                    </div>
+            <div class="swiper-container">
+                <div class="swiper-wrapper" id="event-carousel">
+                    <!-- Slides will be dynamically added -->
                 </div>
                 <!-- Add Pagination -->
                 <div class="swiper-pagination"></div>
-                <!-- Add Navigation -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <!-- Navigation Arrows Removed -->
             </div>
         </div>
+    </div>
 
-        <!-- Events List -->
-        <div class="text-center">
-            <h2 class="text-3xl font-bold mb-8">Event Details</h2>
+    <!-- Events List Column -->
+    <div class="events-column">
+        <div class="events-list">
+            <h1 class="text-5xl font-bold text-center py-4">Upcoming Events</h1>
             <ul class="text-lg">
-                <li class="mb-4">Today, 7pm - The Park, The Fire, Cork</li>
-                <li class="mb-4">Friday, 9:30pm - The Chenet</li>
-                <li class="mb-4">Tuesday, 9th of July, 9pm - JJ Waters</li>
-                <li class="mb-4">19th of July, 7pm - The Orr Fire, Cross Haven</li>
-                <li class="mb-4">19th of July, 9:30pm - The Chenet</li>
+                <li>
+                    <h2 class="text-2xl font-bold">Today, 7pm - The Park, The Fire, Cork</h2>
+                    <p>Description of the event.</p>
+                </li>
+                <li>
+                    <h2 class="text-2xl font-bold">Friday, 9:30pm - The Chenet</h2>
+                    <p>Description of the event.</p>
+                </li>
+                <li>
+                    <h2 class="text-2xl font-bold">Tuesday, 9th of July, 9pm - JJ Waters</h2>
+                    <p>Description of the event.</p>
+                </li>
+                <!-- Add more events as needed -->
             </ul>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Footer -->
-<footer class="p-4 bg-black">
-    <div class="container mx-auto text-center text-white">
-        <p>&copy; 2024 Tomás Ó Dálaigh. All rights reserved.</p>
-    </div>
-</footer>
+<div id="footer"></div>
 
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<!-- Load Navbar and Footer Components -->
 <script>
-    var swiper = new Swiper('.swiper-container', {
-        slidesPerView: 1,
-        spaceBetween: 10,
-        loop: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        mousewheel: true,
-        preventInteractionOnTransition: true,
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-            },
-            768: {
-                slidesPerView: 3,
-                spaceBetween: 40,
-            },
-            1024: {
-                slidesPerView: 3,
-                spaceBetween: 50,
-            },
-        },
+    // Load Navbar
+    fetch('Components/navbar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('navbar').innerHTML = data;
+        });
+
+    // Load Footer
+    fetch('Components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('footer').innerHTML = data;
+        });
+</script>
+
+<!-- Firebase and Carousel Script -->
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+            apiKey: "AIzaSyBRWSpsnw0ozLw9U4DbigjoLeC1iMr-VGM",
+            authDomain: "my-website-9ed5b.firebaseapp.com",
+            projectId: "my-website-9ed5b",
+            storageBucket: "my-website-9ed5b.firebasestorage.app",
+            messagingSenderId: "162510367386",
+            appId: "1:162510367386:web:5b33d83f769995b4960d23"
+        };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Initialize Firestore
+    const db = firebase.firestore();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const albumId = 'AAM2y2OklOoj7agl_Sv_35m2pW421J8Q2GetqJh4UbZXmekVR3c1TYbkcgt9kpZ5TehDoTD-kjM7';
+
+        db.collection('albums').doc(albumId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const images = doc.data().images;
+                    const carousel = document.getElementById('event-carousel');
+
+                    images.forEach((image) => {
+                        const slide = document.createElement('div');
+                        slide.className = 'swiper-slide';
+
+                        const img = document.createElement('img');
+                        img.src = image.url;
+                        img.alt = 'Event Poster';
+                        img.className = 'event-poster';
+
+                        slide.appendChild(img);
+                        carousel.appendChild(slide);
+                    });
+
+                    // Initialize Swiper after slides have been added
+                    new Swiper('.swiper-container', {
+                        direction: 'vertical', // Set carousel direction to vertical
+                        loop: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        mousewheel: true,
+                        autoplay: {
+                            delay: 5000,
+                            disableOnInteraction: false,
+                        },
+                        // Removed navigation arrows
+                    });
+                } else {
+                    console.error('No such document!');
+                }
+            })
+            .catch((error) => {
+                console.error('Error getting document:', error);
+            });
     });
 </script>
 
