@@ -67,17 +67,15 @@ async function syncPhotos() {
     const existingImages = albumDoc.exists ? albumDoc.data().images : [];
 
     // Map of existing photos in Firestore
-    const existingPhotoIds = new Set(existingImages.map((item) => item.id));
+    const existingPhotoMap = new Map(existingImages.map((item) => [item.id, item]));
 
-    // Determine photos to add, update, and delete
-    const photosToAdd = photos.filter((item) => !existingPhotoIds.has(item.id));
-    const photosToUpdate = photos.filter((item) => existingPhotoIds.has(item.id));
+    // Determine photos to add and delete
+    const photosToAdd = photos.filter((item) => !existingPhotoMap.has(item.id));
     const photosToDelete = existingImages.filter(
       (item) => !currentPhotoIds.has(item.id)
     );
 
     console.log(`Adding ${photosToAdd.length} new photos.`);
-    console.log(`Updating ${photosToUpdate.length} existing photos.`);
     console.log(`Deleting ${photosToDelete.length} photos.`);
 
     // Delete removed photos from Firebase Storage and Firestore
@@ -140,64 +138,23 @@ async function syncPhotos() {
       })
     );
 
-    // Update existing images if necessary
-    const imagesToUpdate = await Promise.all(
-      photosToUpdate.map(async (item) => {
-        const fileName = `${item.id}.jpg`;
-        const file = bucket.file(fileName);
+    // Construct the updated images array without duplicates
+    const updatedImagesMap = new Map();
 
-        // Check if the media item has changed
-        const existingImage = existingImages.find((img) => img.id === item.id);
-        if (existingImage && existingImage.url) {
-          // Assuming that baseUrl changes when the photo is edited
-          // If baseUrl has changed, re-upload the image
-          if (existingImage.baseUrl !== item.baseUrl) {
-            // Download and upload the updated image
-            const response = await axios.get(`${item.baseUrl}=d`, {
-              responseType: 'stream',
-            });
+    // Add existing images that are still present in the album
+    for (const item of existingImages) {
+      if (currentPhotoIds.has(item.id)) {
+        updatedImagesMap.set(item.id, item);
+      }
+    }
 
-            // Upload image to Firebase Storage
-            await new Promise((resolve, reject) => {
-              const writeStream = file.createWriteStream({
-                metadata: {
-                  contentType: 'image/jpeg',
-                },
-              });
+    // Add new images
+    for (const item of imagesToAdd) {
+      updatedImagesMap.set(item.id, item);
+    }
 
-              response.data
-                .pipe(writeStream)
-                .on('finish', async () => {
-                  try {
-                    // Make the file publicly readable
-                    await file.makePublic();
-                    resolve();
-                  } catch (err) {
-                    reject(err);
-                  }
-                })
-                .on('error', reject);
-            });
-
-            console.log(`Updated ${fileName} in Firebase Storage.`);
-          }
-        }
-
-        // Generate public URL for the image
-        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(
-          fileName
-        )}?alt=media`;
-
-        return { id: item.id, url: publicUrl };
-      })
-    );
-
-    // Combine all images
-    const updatedImages = [
-      ...existingImages.filter((item) => currentPhotoIds.has(item.id) && !photosToAdd.some((newItem) => newItem.id === item.id)),
-      ...imagesToAdd,
-      ...imagesToUpdate,
-    ];
+    // Convert the map back to an array
+    const updatedImages = Array.from(updatedImagesMap.values());
 
     // Save the updated list of images to Firestore
     await albumRef.set({ images: updatedImages });
